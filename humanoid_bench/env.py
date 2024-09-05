@@ -20,7 +20,7 @@ from .wrappers import (
     ObservationWrapper,
 )
 
-from .robots import H1, H1Hand, H1Touch, H1Strong, G1
+from .robots import H1, H1Hand, H1Touch, H1Strong, G1, MujocoHumanoid
 from .envs.cube import Cube
 from .envs.bookshelf import BookshelfSimple, BookshelfHard
 from .envs.window import Window
@@ -37,6 +37,10 @@ from .envs.basic_locomotion_envs import (
     SitHard,
     Stair,
     Slide,
+)
+
+from .envs.basic_locomotion_envs import (
+    MujocoPlain
 )
 from .envs.reach import Reach
 from .envs.pole import Pole
@@ -60,7 +64,7 @@ DEFAULT_CAMERA_CONFIG = {
 }
 DEFAULT_RANDOMNESS = 0.01
 
-ROBOTS = {"h1": H1, "h1hand": H1Hand, "h1strong": H1Strong, "h1touch": H1Touch, "g1": G1, "CustomHumanoid": CustomHumanoid}
+ROBOTS = {"h1": H1, "h1hand": H1Hand, "h1strong": H1Strong, "h1touch": H1Touch, "g1": G1, "MujocoHumanoid": MujocoHumanoid}
 TASKS = {
     "stand": Stand,
     "walk": Walk,
@@ -94,6 +98,7 @@ TASKS = {
     "insert_normal": Insert,
     "insert_small": Insert,  # This is not an error
     "powerlift": Powerlift,
+    "MujocoPlain":MujocoPlain,
 }
 
 
