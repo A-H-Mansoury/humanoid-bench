@@ -86,7 +86,7 @@ class H1Strong(H1):
 class G1 (H1):
     dof = 44
 
-class CustomHumanoid:
+class MujocoHumanoid:
     dof = 27
     
     def __init__(self, env=None):
