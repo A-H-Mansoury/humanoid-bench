@@ -5,7 +5,7 @@ import mujoco
 import gymnasium as gym
 from gymnasium.spaces import Box
 from dm_control.utils import rewards
-
+from humanoid_bench.dmc_wrapper import MjModelWrapper
 from humanoid_bench.tasks import Task
 
 
@@ -21,7 +21,8 @@ class MujocoPlain(Task):
     
     def __init__(self, robot=None, env=None, **kwargs):
         super().__init__(robot, env, **kwargs)
-        name2id = lambda x: mujoco.mj_name2id(env.mj_model, mujoco.mjtObj.mjOBJ_GEOM, x)
+        mj_model = MjModelWrapper(self._env.model)
+        name2id = lambda x: mujoco.mj_name2id(mj_model, mujoco.mjtObj.mjOBJ_GEOM, x)
         self.head_id = name2id('head')
         self.foot1_right_id = name2id('foot1_right')
         self.foot1_left_id = name2id('foot1_left')
