@@ -13,7 +13,7 @@
      limitations under the License.
 -->
 
-<mujoco model="Humanoid">
+<mujoco model="CustomHumanoid_torque_roughwalk">
   <option timestep="0.005" iterations="1" ls_iterations="4">
     <flag eulerdamp="disable"/>
   </option>
