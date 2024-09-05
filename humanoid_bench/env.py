@@ -60,7 +60,7 @@ DEFAULT_CAMERA_CONFIG = {
 }
 DEFAULT_RANDOMNESS = 0.01
 
-ROBOTS = {"h1": H1, "h1hand": H1Hand, "h1strong": H1Strong, "h1touch": H1Touch, "g1": G1}
+ROBOTS = {"h1": H1, "h1hand": H1Hand, "h1strong": H1Strong, "h1touch": H1Touch, "g1": G1, "CustomHumanoid": CustomHumanoid}
 TASKS = {
     "stand": Stand,
     "walk": Walk,
