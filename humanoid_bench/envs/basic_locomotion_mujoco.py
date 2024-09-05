@@ -9,7 +9,7 @@ from dm_control.utils import rewards
 from humanoid_bench.tasks import Task
 
 
-class MujocoWalk(Task):
+class MujocoPlain(Task):
     qpos0_robot = {
       "MujocoHumanoid": '0 0 1.282 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0'
     }
