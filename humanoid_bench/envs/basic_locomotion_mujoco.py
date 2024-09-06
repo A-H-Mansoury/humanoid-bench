@@ -18,21 +18,23 @@ class MujocoPlain(Task):
     _healthy_reward=5.0
     _reset_noise_scale=1e-2
     dt = 0.025
+    counter = 0
     
     def __init__(self, robot=None, env=None, **kwargs):
         super().__init__(robot, env, **kwargs)
-        mj_model = MjModelWrapper(self._env.model)
-        name2id = lambda x: mujoco.mj_name2id(mj_model, mujoco.mjtObj.mjOBJ_GEOM, x)
-        self.head_id = name2id('head')
-        self.foot1_right_id = name2id('foot1_right')
-        self.foot1_left_id = name2id('foot1_left')
-        self.torso_id = name2id('torso')
+        if env:
+          mj_model = MjModelWrapper(env.model)
+          name2id = lambda x: mj_model.name2id(x, mujoco.mjtObj.mjOBJ_GEOM)
+          self.head_id = name2id('head')
+          self.foot1_right_id = name2id('foot1_right')
+          self.foot1_left_id = name2id('foot1_left')
+          self.torso_id = name2id('torso')
 
     #modified
     @property
     def observation_space(self):
         return Box(
-            low=-np.inf, high=np.inf, shape=(60,), dtype=np.float64
+            low=-np.inf, high=np.inf, shape=(59,), dtype=np.float64
         )
 
 
@@ -74,7 +76,7 @@ class MujocoPlain(Task):
         
     def step(self, action):
         action = np.where(
-            state.info['counter'] % 200 <= 99,
+            self.counter % 200 <= 99,
             action,
             np.concatenate([
               action[0:3],
@@ -85,7 +87,7 @@ class MujocoPlain(Task):
             ])
         )
     
-        action = action.at[np.array([15, 17, 18, 20])].set(0)
+        action[np.array([15, 17, 18, 20])]=0
 
         data0 = self._env.data
         self._env.do_simulation(action, self._env.frame_skip)
@@ -99,11 +101,7 @@ class MujocoPlain(Task):
         y_head = data.geom_xpos[self.head_id, 2]
         y_mean_feet = (data.geom_xpos[self.foot1_right_id, 2]+ data.geom_xpos[self.foot1_left_id, 2])/2
     
-        done = np.where(
-          (y_head-y_mean_feet) < 0.8,
-          1.0,
-          0.0
-          )
+        done = (y_head-y_mean_feet) < 0.8
 
         healthy_reward = self._healthy_reward
     

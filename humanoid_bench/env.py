@@ -39,7 +39,7 @@ from .envs.basic_locomotion_envs import (
     Slide,
 )
 
-from .envs.basic_locomotion_envs import (
+from .envs.basic_locomotion_mujoco import (
     MujocoPlain
 )
 from .envs.reach import Reach
@@ -105,13 +105,13 @@ TASKS = {
 class HumanoidEnv(MujocoEnv, gym.utils.EzPickle):
     metadata = {
         "render_modes": ["human", "rgb_array", "depth_array"],
-        "render_fps": 50,
+        "render_fps": 20,
     }
 
     def __init__(
         self,
         robot=None,
-        control=None,
+        control="torque",
         task=None,
         render_mode="rgb_array",
         width=256,
@@ -208,10 +208,10 @@ class HumanoidEnv(MujocoEnv, gym.utils.EzPickle):
             data=index.struct_indexer(data, "mjdata", axis_indexers),
         )
 
-        assert self.robot.dof + self.task.dof == len(data.qpos), (
+        assert self.robot.dof + self.task.dof == len(data.qpos)-1, (
             self.robot.dof,
             self.task.dof,
-            len(data.qpos),
+            len(data.qpos)-1, #one because quat is 4 element but has 3 dof
         )
 
     def step(self, action):
@@ -246,7 +246,7 @@ if __name__ == "__main__":
         max_episode_steps=1000,
         kwargs={
             "robot": "h1hand",
-            "control": "pos",
+            "control": "torque",
             "task": "maze_hard",
         },
     )
